@@ -50,10 +50,12 @@ class MainActivity : ComponentActivity() {
 }
 @Composable
 fun ProgPrincipal9() {
-    val urlBase = "https://jsonplaceholder.typicode.com/"
-    val retrofit = Retrofit.Builder().baseUrl(urlBase)
-        .addConverterFactory(GsonConverterFactory.create()).build()
-    val servicio = retrofit.create(PostApiService::class.java)
+    val urlBase = "https://dummyjson.com/"
+    val retrofit = Retrofit.Builder()
+        .baseUrl(urlBase)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+    val servicio = retrofit.create(ProductApiService::class.java)
     val navController = rememberNavController()
 
     Scaffold(
@@ -103,7 +105,7 @@ fun BarraInferior(navController: NavHostController) {
 fun Contenido(
     pv: PaddingValues,
     navController: NavHostController,
-    servicio: PostApiService
+    servicio: ProductApiService
 ) {
     Box(
         modifier = Modifier
@@ -116,11 +118,13 @@ fun Contenido(
         ) {
             composable("inicio") { ScreenInicio() }
 
-            composable("posts") { ScreenPosts(navController, servicio) }
-            composable("postsVer/{id}", arguments = listOf(
-                navArgument("id") { type = NavType.IntType} )
-            ) {
-                ScreenPost(navController, servicio, it.arguments!!.getInt("id"))
+            composable("posts") { ScreenProducts(navController, servicio) }
+            composable(
+                "productosVer/{id}",
+                arguments = listOf(navArgument("id") { type = NavType.IntType })
+            ) { backStackEntry ->
+                val productId = backStackEntry.arguments?.getInt("id") ?: 0
+                ScreenProduct(navController, servicio, productId)
             }
         }
     }

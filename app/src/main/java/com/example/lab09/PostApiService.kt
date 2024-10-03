@@ -3,11 +3,10 @@ package com.example.lab09
 import retrofit2.http.GET
 import retrofit2.http.Path
 
-interface PostApiService {
-    @GET("posts")
-    suspend fun getUserPosts(): List<PostModel>
+interface ProductApiService {
+    @GET("products")
+    suspend fun getProducts(): ProductResponse
 
-    @GET("posts/{id}")
-    suspend fun getUserPostById(@Path("id") id: Int): PostModel
-
+    @GET("products/{id}")
+    suspend fun getProductById(@Path("id") id: Int): ProductModel
 }
